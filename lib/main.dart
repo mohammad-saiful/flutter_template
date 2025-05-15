@@ -22,6 +22,7 @@ class MyApp extends ConsumerWidget {
     return MediaQuery.withClampedTextScaling(
       maxScaleFactor: 1.5,
       child: MaterialApp.router(
+        debugShowCheckedModeBanner: false,
         theme: context.lightTheme,
         darkTheme: context.darkTheme,
         themeMode: ThemeMode.system,

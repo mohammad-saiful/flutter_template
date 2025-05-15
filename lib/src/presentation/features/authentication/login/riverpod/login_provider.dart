@@ -55,4 +55,7 @@ class Login extends _$Login {
       state = state.copyWith(type: Status.error, error: e.toString());
     }
   }
+  void clearError() {
+    state = state.copyWith(type: Status.initial, error: null);
+  }
 }

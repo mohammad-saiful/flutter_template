@@ -164,3 +164,7 @@ class Unexpected extends Failure {
     dynamic error,
   ) : super('Unknown Error', '500', error);
 }
+class NetworkFailure extends Failure {
+  const NetworkFailure(Map<String, dynamic> error)
+      : super('Network Failure', '555', error);
+}

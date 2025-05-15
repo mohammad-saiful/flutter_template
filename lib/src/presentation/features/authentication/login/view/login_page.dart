@@ -39,8 +39,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
         context.pushNamed(Routes.homeTab);
       } else if (next.isError) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(next.error.toString())),
+          SnackBar(content: Text(next.error.toString(), textAlign: TextAlign.center,), backgroundColor: Colors.red,),
         );
+        notifier.clearError();
       } else {
         shouldRemember.value = next.rememberMe;
       }

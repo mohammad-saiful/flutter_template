@@ -7,6 +7,10 @@ Future<SharedPreferences> sharedPreferences(Ref ref) =>
 @riverpod
 Dio dio(Ref ref) {
   final dio = Dio();
+  BaseOptions(
+      connectTimeout: const Duration(seconds: 5),
+      receiveTimeout: const Duration(seconds: 5),
+  );
 
   dio.interceptors.addAll(
     [
@@ -14,11 +18,8 @@ Dio dio(Ref ref) {
         refreshTokenEndpoint: 'refreshToken',
         accessTokenKey: 'accessToken',
       ),
-      ExceptionHandlerInterceptor(
+       ExceptionHandlerInterceptor(
         onUnAuthorizedError: () {},
-        onBadRequestError: () {
-          print("A Bad Request.");
-        },
       ),
       if (kDebugMode)
         PrettyDioLogger(

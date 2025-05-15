@@ -1,9 +1,11 @@
+import 'package:dio/dio.dart';
 import 'package:flutter_template/src/data/services/cache/cache_service.dart';
 
 import '../../domain/entities/login_entity.dart';
 import '../../domain/entities/sign_up_entity.dart';
 import '../../domain/repositories/authentication_repository.dart';
 import '../models/login_model.dart';
+import '../services/network/interceptor/failures.dart';
 import '../services/network/rest_client.dart';
 
 final class AuthenticationRepositoryImpl extends AuthenticationRepository {
@@ -25,12 +27,17 @@ final class AuthenticationRepositoryImpl extends AuthenticationRepository {
   Future<LoginResponseEntity> login(LoginRequestEntity data) async {
     return await request(() async {
       final model = LoginRequestModel.fromEntity(data);
-      final response = await remote.login(model);
-
-      // Save the session if the user has selected the "Remember Me" option
-      if (data.shouldRemeber ?? false) await _saveSession();
-
-      return LoginResponseModelMapper.fromJson(response.data);
+      try {
+        final response = await remote.login(model);
+        if (data.shouldRemeber ?? false) await _saveSession();
+        return LoginResponseModelMapper.fromJson(response.data);
+      } on DioException catch (e) {
+        if (e.error is Failure) {
+          print('Rethrowing Failure from DioException: ${e.error}');
+          throw e.error as Failure; // Rethrow the Failure
+        }
+        rethrow;
+      }
     });
   }
 

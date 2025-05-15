@@ -1,22 +1,21 @@
-import 'package:dio/dio.dart';
-import 'package:flutter/services.dart';
+import 'dart:ui';
 
-import 'failures.dart';
+import 'package:dio/dio.dart';
+import 'package:flutter_template/src/data/services/network/interceptor/failures.dart';
 
 class ExceptionHandlerInterceptor extends Interceptor {
   final VoidCallback? onUnAuthorizedError;
-  final VoidCallback? onBadRequestError;
 
-  ExceptionHandlerInterceptor({this.onUnAuthorizedError, this.onBadRequestError});
+  ExceptionHandlerInterceptor({this.onUnAuthorizedError});
 
-  dynamic handleError(dynamic err) {
+  @override
+  void onError(DioException err, ErrorInterceptorHandler handler) {
     final response = err.response;
     if (response != null) {
       final errorData = response.data;
       switch (response.statusCode) {
         case 400:
-          onBadRequestError?.call();
-          throw BadRequest(errorData);
+          throw BadRequest(errorData); // Throw Failure directly
         case 401:
           onUnAuthorizedError?.call();
           throw Unauthorized(errorData);
@@ -65,6 +64,10 @@ class ExceptionHandlerInterceptor extends Interceptor {
         default:
           throw Unexpected(errorData);
       }
+    } else {
+      throw const NetworkFailure({
+        'message':'Network error occurred',
+      });
     }
   }
 }
