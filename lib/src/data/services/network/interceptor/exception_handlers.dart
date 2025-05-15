@@ -10,6 +10,10 @@ class ExceptionHandlerInterceptor extends Interceptor {
 
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
+    handleError(err);
+  }
+
+  dynamic handleError(dynamic err) {
     final response = err.response;
     if (response != null) {
       final errorData = response.data;
