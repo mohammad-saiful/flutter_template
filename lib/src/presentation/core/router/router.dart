@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_template/src/presentation/features/home/view/home_page.dart';
+import 'package:flutter_template/src/presentation/features/profile/view/profile_page.dart';
+import 'package:flutter_template/src/presentation/features/report/view/report_page.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -11,7 +14,6 @@ import '../../features/authentication/forgot_password/view/reset_password_page.d
 import '../../features/authentication/forgot_password/view/reset_password_success_page.dart';
 import '../../features/authentication/login/view/login_page.dart';
 import '../../features/authentication/registration/view/registration_page.dart';
-import '../../features/home/view/home_page.dart';
 import '../../features/onboarding/view/onboarding_page.dart';
 import '../../features/splash/view/splash_page.dart';
 import '../widgets/app_startup/startup_widget.dart';
@@ -20,6 +22,7 @@ import 'routes.dart';
 
 part 'parts/authentication_routes.dart';
 part 'parts/on_boarding_routes.dart';
+part 'parts/home_routes.dart';
 part 'router.g.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'Root');
@@ -57,13 +60,14 @@ GoRouter goRouter(Ref ref) {
       ),
       ..._onboardingRoutes(ref),
       ..._authenticationRoutes(ref),
-      GoRoute(
-        path: Routes.homeTab,
-        name: Routes.homeTab,
-        pageBuilder: (context, state) {
-          return const NoTransitionPage(child: HomePage());
-        },
-      ),
+      ..._homeRoutes(ref),
+      // GoRoute(
+      //   path: Routes.homeTab,
+      //   name: Routes.homeTab,
+      //   pageBuilder: (context, state) {
+      //     return const NoTransitionPage(child: HomePage());
+      //   },
+      // ),
     ],
   );
 }

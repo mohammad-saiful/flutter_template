@@ -16,6 +16,9 @@ Dio dio(Ref ref) {
       ),
       ExceptionHandlerInterceptor(
         onUnAuthorizedError: () {},
+        onBadRequestError: () {
+          print("A Bad Request.");
+        },
       ),
       if (kDebugMode)
         PrettyDioLogger(

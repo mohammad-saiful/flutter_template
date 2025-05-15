@@ -13,9 +13,11 @@ base class ResponseModel {
 
   factory ResponseModel.fromJson(Map<String, dynamic> json) {
     return ResponseModel(
-      success: json['success'],
-      message: json['message'],
-      error: json['error'],
+      success: json['success'] as bool? ?? false, // Default to false if missing
+      message: json['message'] as String?,
+      error: json['error'] != null
+          ? ErrorModel.fromJson(json['error'] as Map<String, dynamic>)
+          : null,
       data: json['data'],
     );
   }
@@ -28,15 +30,15 @@ base class ErrorModel {
 
   ErrorModel({
     required this.message,
-    required this.code,
-    required this.stack,
+    this.code,
+    this.stack,
   });
 
   factory ErrorModel.fromJson(Map<String, dynamic> json) {
     return ErrorModel(
-      message: json['message'],
-      code: json['code'],
-      stack: json['stack'],
+      message: json['message'] as String? ?? 'Unknown error',
+      code: json['code'] as String?,
+      stack: json['stack'] as String?,
     );
   }
 }

@@ -5,8 +5,9 @@ import 'failures.dart';
 
 class ExceptionHandlerInterceptor extends Interceptor {
   final VoidCallback? onUnAuthorizedError;
+  final VoidCallback? onBadRequestError;
 
-  ExceptionHandlerInterceptor({this.onUnAuthorizedError});
+  ExceptionHandlerInterceptor({this.onUnAuthorizedError, this.onBadRequestError});
 
   dynamic handleError(dynamic err) {
     final response = err.response;
@@ -14,6 +15,7 @@ class ExceptionHandlerInterceptor extends Interceptor {
       final errorData = response.data;
       switch (response.statusCode) {
         case 400:
+          onBadRequestError?.call();
           throw BadRequest(errorData);
         case 401:
           onUnAuthorizedError?.call();

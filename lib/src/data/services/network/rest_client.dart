@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_template/src/core/logger/log.dart';
 import 'package:retrofit/retrofit.dart';
 
 import '../../models/login_model.dart';

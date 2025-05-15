@@ -11,4 +11,6 @@ class Routes {
   static const String registration = 'registration';
 
   static const String homeTab = '/home-tab';
+  static const String profile = '/profile';
+  static const String report = '/report';
 }
